@@ -3,6 +3,9 @@
 var express = require('express');
 var fs = require('fs');
 var mysql = require('mysql');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
 
 var mProject = function () {
     'use strict';
@@ -19,7 +22,7 @@ var mProject = function () {
      */
     self.setupVariables = function () {
         //  Set the environment variables we need.
-        self.dbHost = process.env.OPENSHIFT_MYSQL_DB_HOST;
+        self.dbHost = process.env.OPENSHIFT_MYSQL_DB_HOST || 'localhost';
         self.dbUser = process.env.OPENSHIFT_MYSQL_DB_USERNAME;
         self.dbPass = process.env.OPENSHIFT_MYSQL_DB_PASSWORD;
         self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
@@ -33,13 +36,34 @@ var mProject = function () {
         }
     };
 
-    self.connection = mysql.createConnection({
-        host: 'fas-bgauvey.rhcloud.com',
-        user: 'admin3FUHCpU',
-        database: 'fas',
-        password: 'H_CJDelXKm74'
-    });
+    self.connectDb = function(){
+        self.connection = mysql.createConnection({
+            host      : self.dbHost ,
+            //port    : 3306,
+            user      : 'mp_user',
+            password  : 'aSeazeSqpBtGNywm',
+            database  : 'mProject'
+        });
+        
+        //self.connection.connect();
+    }
+    self.setupPassport = function() {
+        passport.serializeUser(function(user, done) {
+          done(null, user);
+        });
 
+        passport.deserializeUser(function(user, done) {
+          done(null, user);
+        });
+
+        passport.use(new LocalStrategy(function(username, password, done) {
+          process.nextTick(function() {
+            // Auth Check Logic
+          });
+        }));
+    
+    }
+    
     /**
      *  Populate the cache.
      */
@@ -135,18 +159,19 @@ var mProject = function () {
         }
 
         // Add the handlers for the api
-        require('./routes')(self.app);
+        require('./routes')(self.app, self.connection);
     };
 
 
     /**
-     *  Initializes the sample application.
+     *  Initializes the application.
      */
     self.initialize = function () {
         self.setupVariables();
         self.populateCache();
         self.setupTerminationHandlers();
-
+        self.connectDb();
+        self.setupPassport();
         // Create the express server and routes.
         self.initializeServer();
     };
