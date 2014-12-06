@@ -28,9 +28,9 @@ Below is a table of addresses and actions
 
 ### People
 
-The creator and father of mProject is [Clint McGee](mailto://clint.mcgee)  
+The creator and father of mProject is [Clint McGee](https://github.com/clintmcgee)  
 The author of mProject is [Bill Gauvey](https://github.com/bgauvey) 
 
 ### License
 
-  [ICS](LICENSE)
+  [ISC](LICENSE)

@@ -5,7 +5,18 @@ exports.getAll = function (req, res) {
     }]);
 };
 
-exports.getById = function (req, res) {};
-exports.add = function (req, res) {};
-exports.update = function (req, res) {};
-exports.remove = function (req, res) {};
+exports.getById = function (req, res) {
+    console.log(req.params.id);
+};
+
+exports.add = function (req, res) {
+    
+};
+
+exports.update = function (req, res) {
+    
+};
+
+exports.remove = function (req, res) {
+    
+};

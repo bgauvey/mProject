@@ -4,11 +4,12 @@
   "description": "Food allergy api",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/bgauvey/FoodAllergy-Web_api.git"
+    "url": "http://github.com/bgauvey/mProjecti.git"
   },
   "author": "Bill Gauvey",
   "license": "ISC",
