@@ -1,7 +1,12 @@
+
 mProject
 ========
 
 ### Installation
+
+The OpenShift `nodejs` cartridge documentation can be found at:
+
+http://openshift.github.io/documentation/oo_cartridge_guide.html#nodejs
 
 ```bash
 $ npm install
@@ -34,3 +39,5 @@ The author of mProject is [Bill Gauvey](https://github.com/bgauvey)
 ### License
 
   [ISC](LICENSE)
+
+
