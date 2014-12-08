@@ -23,8 +23,8 @@ var mProject = function () {
     self.setupVariables = function () {
         //  Set the environment variables we need.
         self.dbHost = process.env.OPENSHIFT_MYSQL_DB_HOST || 'localhost';
-        self.dbUser = process.env.OPENSHIFT_MYSQL_DB_USERNAME;
-        self.dbPass = process.env.OPENSHIFT_MYSQL_DB_PASSWORD;
+        self.dbUser = process.env.OPENSHIFT_MYSQL_DB_USERNAME || 'mp_user';
+        self.dbPass = process.env.OPENSHIFT_MYSQL_DB_PASSWORD || 'aSeazeSqpBtGNywm';
         self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
         self.port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
@@ -36,46 +36,53 @@ var mProject = function () {
         }
     };
 
-    self.connectDb = function(){
+    /**
+    * Set up the database connection
+    */
+    self.connectDb = function () {
         self.connection = mysql.createConnection({
-            host      : self.dbHost ,
-            //port    : 3306,
-            user      : 'mp_user',
-            password  : 'aSeazeSqpBtGNywm',
+            host      : self.dbHost,
+            user      : self.dbUser,
+            password  : self.dbPass,
             database  : 'mProject'
         });
-        
-        //self.connection.connect();
-    }
-    self.setupPassport = function() {
-        passport.serializeUser(function(user, done) {
-          done(null, user);
+    };
+    
+    /**
+    * Set up the security for the api pages
+    */
+    self.setupPassport = function () {
+        passport.serializeUser(function (user, done) {
+            done(null, user);
         });
 
-        passport.deserializeUser(function(user, done) {
-          done(null, user);
+        passport.deserializeUser(function (user, done) {
+            done(null, user);
         });
 
-        passport.use(new LocalStrategy(function(username, password, done) {
-          process.nextTick(function() {
-            // Auth Check Logic
-          });
+        passport.use(new LocalStrategy(function (username, password, done) {
+          process.nextTick(function () {
+              // Auth Check Logic
+            });
         }));
     
-    }
+    };
     
     /**
      *  Populate the cache.
      */
     self.populateCache = function () {
         if (typeof self.zcache === "undefined") {
-            self.zcache = {
+            self.zcache = [{
                 'index.html': ''
-            };
+            },{
+                'api.html': ''
+            }];
         }
 
         //  Local cache for static content.
         self.zcache['index.html'] = fs.readFileSync('./index.html');
+        self.zcache['api.html'] = fs.readFileSync('./api.html');
     };
 
 
@@ -128,38 +135,34 @@ var mProject = function () {
     /*  ================================================================  */
 
     /**
-     *  Create the routing table entries + handlers for the application.
-     */
-    self.createRoutes = function () {
-        self.routes = {};
-
-        self.routes['/asciimo'] = function (req, res) {
-            var link = "http://i.imgur.com/kmbjB.png";
-            res.send("<html><body><img src='" + link + "'></body></html>");
-        };
-
-        self.routes['/'] = function (req, res) {
-            res.setHeader('Content-Type', 'text/html');
-            res.send(self.cache_get('index.html'));
-        };
-    };
-
-
-    /**
      *  Initialize the server (express) and create the routes and register
      *  the handlers.
      */
     self.initializeServer = function () {
-        self.createRoutes();
         self.app = express();
-
-        //  Add handlers for the app (from the routes).
-        for (var r in self.routes) {
-            self.app.get(r, self.routes[r]);
-        }
+        
+        var home = express.Router();
+        home.get('/', function (req, res) {
+            res.setHeader('Content-Type', 'text/html');
+            res.send(self.cache_get('index.html'));
+        });
+        self.app.use('/', home);
+        
+        //create the express router
+        var router = express.Router();
+        
+        // Initial dummy route for testing /api
+        router.get('/', function (req, res) {
+           //res.json({ message : 'You are here' }); 
+            res.setHeader('Content-Type', 'text/html');
+            res.send(self.cache_get('api.html'));
+        });
+        
+        // Register all our routes with /api prefix
+        self.app.use('/api', router);
 
         // Add the handlers for the api
-        require('./routes')(self.app, self.connection);
+        require('./routes/ingredients')(router, self.connection);
     };
 
 
@@ -178,7 +181,7 @@ var mProject = function () {
 
 
     /**
-     *  Start the server (starts up the sample application).
+     *  Start the server.
      */
     self.start = function () {
         //  Start the app on the specific interface (and port).
