@@ -37,20 +37,20 @@ var mProject = function () {
     };
 
     /**
-    * Set up the database connection
-    */
+     * Set up the database connection
+     */
     self.connectDb = function () {
         self.connection = mysql.createConnection({
-            host      : self.dbHost,
-            user      : self.dbUser,
-            password  : self.dbPass,
-            database  : 'mProject'
+            host: self.dbHost,
+            user: self.dbUser,
+            password: self.dbPass,
+            database: 'mProject'
         });
     };
-    
+
     /**
-    * Set up the security for the api pages
-    */
+     * Set up the security for the api pages
+     */
     self.setupPassport = function () {
         passport.serializeUser(function (user, done) {
             done(null, user);
@@ -61,13 +61,13 @@ var mProject = function () {
         });
 
         passport.use(new LocalStrategy(function (username, password, done) {
-          process.nextTick(function () {
-              // Auth Check Logic
+            process.nextTick(function () {
+                // Auth Check Logic
             });
         }));
-    
+
     };
-    
+
     /**
      *  Populate the cache.
      */
@@ -75,7 +75,7 @@ var mProject = function () {
         if (typeof self.zcache === "undefined") {
             self.zcache = [{
                 'index.html': ''
-            },{
+            }, {
                 'api.html': ''
             }];
         }
@@ -140,6 +140,11 @@ var mProject = function () {
      */
     self.initializeServer = function () {
         self.app = express();
+
+        self.app.use('/api', function (req, res, next) {
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            next();
+        });
         
         var home = express.Router();
         home.get('/', function (req, res) {
@@ -147,17 +152,16 @@ var mProject = function () {
             res.send(self.cache_get('index.html'));
         });
         self.app.use('/', home);
-        
+
         //create the express router
         var router = express.Router();
-        
+
         // Initial dummy route for testing /api
         router.get('/', function (req, res) {
-           //res.json({ message : 'You are here' }); 
             res.setHeader('Content-Type', 'text/html');
             res.send(self.cache_get('api.html'));
         });
-        
+
         // Register all our routes with /api prefix
         self.app.use('/api', router);
 
