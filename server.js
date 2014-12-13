@@ -140,7 +140,8 @@ var mProject = function () {
      */
     self.initializeServer = function () {
         self.app = express();
-
+        self.app.disable('etag');
+        
         self.app.use('/api', function (req, res, next) {
             res.setHeader("Access-Control-Allow-Origin", "*");
             next();
