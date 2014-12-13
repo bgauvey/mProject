@@ -1,35 +1,35 @@
 {
-    "name": "mProject",
-    "version": "1.0.0",
-    "description": "mProject web api",
-    "main": "server.js",
-    "homepage": "http://fas-bgauvey.rhcloud.com/",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node server.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "http://github.com/bgauvey/mProject.git"
-    },
-    "author": {
-        "name": "Bill Gauvey",
-        "email": "bgauvey@gmail.com",
-        "url": "http://github.com/bgauvey/"
-    },
-    "engines": {
-        "node": ">= 0.6.0",
-        "npm": ">= 1.0.0"
-    },
-    "license": "ISC",
-    "dependencies": {
-        "express": "^4.10.4",
-        "mysql": "^2.5.3",
-        "passport": "^0.2.1",
-        "passport-local": "^1.0.0"
-    },
-    "devDependencies": {},
-    "bundleDependencies": [],
-
-    "private": true,
+  "name": "mProject",
+  "version": "1.0.0",
+  "description": "mProject web api",
+  "main": "server.js",
+  "homepage": "http://fas-bgauvey.rhcloud.com/",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/bgauvey/mProject.git"
+  },
+  "author": {
+    "name": "Bill Gauvey",
+    "email": "bgauvey@gmail.com",
+    "url": "http://github.com/bgauvey/"
+  },
+  "engines": {
+    "node": ">= 0.6.0",
+    "npm": ">= 1.0.0"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.10.0",
+    "express": "^4.10.4",
+    "mysql": "^2.5.3",
+    "passport": "^0.2.1",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {},
+  "bundleDependencies": [],
+  "private": true
 }

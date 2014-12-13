@@ -5,7 +5,7 @@ var fs = require('fs');
 var mysql = require('mysql');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
+var bodyParser = require('body-parser');
 
 var mProject = function () {
     'use strict';
@@ -140,6 +140,12 @@ var mProject = function () {
      */
     self.initializeServer = function () {
         self.app = express();
+        
+        self.app.use(bodyParser.urlencoded({
+            extended: true
+        }));
+        self.app.use(bodyParser.json());
+
         self.app.disable('etag');
         
         self.app.use('/api', function (req, res, next) {
