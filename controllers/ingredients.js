@@ -27,7 +27,7 @@ exports.getById = function (req, res) {
             if (rows.length === 0) {
                 res.status(404).send("Resource not found");
             } else {
-                res.send(rows);
+                res.send(rows[0]);
             }
         }
     });
