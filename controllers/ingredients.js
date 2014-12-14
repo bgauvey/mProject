@@ -57,9 +57,12 @@ exports.update = function (req, res) {
             } else {
                 queryString = 'UPDATE ingredients SET ?';
                 db.query(queryString, req.body, function (err, rows, fields) {
-                if (err)
-                    throw err;
-                res.status(200).send("OK"); 
+                    if (err) {
+                        throw err;
+                    } else {
+                        res.status(200).send("OK"); 
+                    }
+                });
             }
         }
     });
@@ -79,9 +82,12 @@ exports.remove = function (req, res) {
             } else {
                 queryString = 'DELETE FROM ingredients WHERE id = ?';
                 db.query(queryString, [req.params.id], function (err, rows, fields) {
-                if (err)
-                    throw err;
-                res.status(200).send("OK"); 
+                    if (err) {
+                        throw err;
+                    } else {
+                        res.status(200).send("OK"); 
+                    }
+                });
             }
         }
     });
