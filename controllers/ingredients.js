@@ -38,29 +38,29 @@ exports.add = function (req, res, next) {
     db.query(queryString, req.body, function (err, result) {
         if (err) {
             throw err;
-        } 
-     });
+        }
+    });
     res.status(201).send("Created");
 };
 
 exports.update = function (req, res) {
     // select the item to be deleted
     // if exists delete item , otherwise send 404 (page not found)
-    var queryString = 'SELECT * FROM ingredients WHERE id = ?';
-
-    db.query(queryString, [req.params.id], function (err, rows, fields) {
+    var queryString = 'SELECT * FROM ingredients WHERE id = ?',
+        id = req.params.id;
+    db.query(queryString, id, function (err, rows, fields) {
         if (err) {
             throw err;
         } else {
             if (rows.length === 0) {
                 res.status(404).send("Resource not found");
             } else {
-                queryString = 'UPDATE ingredients SET ?';
-                db.query(queryString, req.body, function (err, rows, fields) {
+                queryString = 'UPDATE ingredients SET ? WHERE id = ?';
+                db.query(queryString, [req.body, id], function (err, rows, fields) {
                     if (err) {
                         throw err;
                     } else {
-                        res.status(200).send("OK"); 
+                        res.status(200).send("OK");
                     }
                 });
             }
@@ -85,7 +85,7 @@ exports.remove = function (req, res) {
                     if (err) {
                         throw err;
                     } else {
-                        res.status(200).send("OK"); 
+                        res.status(200).send("OK");
                     }
                 });
             }
