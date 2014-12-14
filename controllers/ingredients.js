@@ -6,9 +6,8 @@ exports.set_db = function (value) {
 };
 
 exports.getAll = function (req, res) {
-    var queryString = 'SELECT * FROM ingredients';
 
-    db.query(queryString, function (err, rows, fields) {
+    db.query('SELECT * FROM ingredients', function (err, rows) {
         if (err) {
             throw err;
         } else {
@@ -18,9 +17,9 @@ exports.getAll = function (req, res) {
 };
 
 exports.getById = function (req, res) {
-    var queryString = 'SELECT * FROM ingredients WHERE id = ?';
+    var id = req.params.id;
 
-    db.query(queryString, [req.params.id], function (err, rows, fields) {
+    db.query('SELECT * FROM ingredients WHERE id = ?', [id], function (err, rows) {
         if (err) {
             throw err;
         } else {
@@ -34,8 +33,11 @@ exports.getById = function (req, res) {
 };
 
 exports.add = function (req, res, next) {
-    var queryString = 'INSERT INTO ingredients SET ?';
-    db.query(queryString, req.body, function (err, result) {
+    var input = JSON.parse(JSON.stringify(req.body)),
+        data = {
+            name: input.name
+        };
+    db.query("INSERT INTO ingredients set ?", data, function (err, rows) {
         if (err) {
             throw err;
         }
@@ -46,17 +48,19 @@ exports.add = function (req, res, next) {
 exports.update = function (req, res) {
     // select the item to be deleted
     // if exists delete item , otherwise send 404 (page not found)
-    var queryString = 'SELECT * FROM ingredients WHERE id = ?',
-        id = req.params.id;
-    db.query(queryString, id, function (err, rows, fields) {
+    var id = req.params.id,
+        input = JSON.parse(JSON.stringify(req.body));
+    db.query("SELECT * FROM ingredients WHERE id = ?", [id], function (err, rows) {
         if (err) {
             throw err;
         } else {
             if (rows.length === 0) {
                 res.status(404).send("Resource not found");
             } else {
-                queryString = 'UPDATE ingredients SET ? WHERE id = ?';
-                db.query(queryString, [req.body, id], function (err, rows, fields) {
+                var data = {
+                    name: input.name
+                };
+                db.query("UPDATE ingredients set ? WHERE id = ?", [data, id], function (err, rows) {
                     if (err) {
                         throw err;
                     } else {
@@ -71,17 +75,16 @@ exports.update = function (req, res) {
 exports.remove = function (req, res) {
     // select the item to be deleted
     // if exists delete item , otherwise send 404 (page not found)
-    var queryString = 'SELECT * FROM ingredients WHERE id = ?';
+    var id = req.params.id;
 
-    db.query(queryString, [req.params.id], function (err, rows, fields) {
+    db.query("SELECT * FROM ingredients WHERE id = ?", [id], function (err, rows, fields) {
         if (err) {
             throw err;
         } else {
             if (rows.length === 0) {
                 res.status(404).send("Resource not found");
             } else {
-                queryString = 'DELETE FROM ingredients WHERE id = ?';
-                db.query(queryString, [req.params.id], function (err, rows, fields) {
+                db.query("DELETE FROM ingredients WHERE id = ?", [id], function (err, rows) {
                     if (err) {
                         throw err;
                     } else {
