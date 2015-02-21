@@ -16,7 +16,7 @@ var dbconfig = require('./config/database');
 
 
 var settings = {
-    port: process.env.OPENSHIFT_NODEJS_PORT || 8080,
+    port: process.env.OPENSHIFT_NODEJS_PORT || 8001,
     dbHost: process.env.OPENSHIFT_MYSQL_DB_HOST || dbconfig.connection.host,
     dbUser: process.env.OPENSHIFT_MYSQL_DB_USERNAME || dbconfig.connection.user,
     dbPass: process.env.OPENSHIFT_MYSQL_DB_PASSWORD || dbconfig.connection.password,
