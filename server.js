@@ -33,7 +33,7 @@ function connectDb () {
             database: dbconfig.database
         });
     }
-console.log('Connecting to mySql ... ');
+console.log('Connecting to mySql ... [' + settings.dbUser + '@' + settings.dbHost + ']');
 connectDb();
 // pass passport for configuration
 require('./config/passport')(passport); 
