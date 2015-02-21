@@ -1,10 +1,11 @@
 {
   "name": "mProject",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "mProject web api",
   "main": "server.js",
   "homepage": "http://fas-bgauvey.rhcloud.com/",
   "scripts": {
+    "init": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
@@ -21,13 +22,21 @@
     "node": ">= 0.6.0",
     "npm": ">= 1.0.0"
   },
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
+    "bcrypt-nodejs": "latest",
     "body-parser": "^1.10.0",
+    "connect-flash": "~0.1.1",
+    "cookie-parser": "~1.0.1",
+    "cookie-session": "~1.1.0",
+    "ejs": "~0.8.8",
     "express": "^4.10.4",
+    "express-session": "^1.10.3",
+    "morgan": "^1.1.1",
     "mysql": "^2.5.3",
     "passport": "^0.2.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "serve-favicon": "^2.0.1"
   },
   "devDependencies": {},
   "bundleDependencies": [],

@@ -38,6 +38,6 @@ The author of mProject is [Bill Gauvey](https://github.com/bgauvey)
 
 ### License
 
-  [ISC](LICENSE)
+  [MIT](LICENSE)
 
 

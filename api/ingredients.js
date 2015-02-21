@@ -1,8 +1,8 @@
 module.exports = function (router, connection) {
-    "use strict";
+    'use strict';
 
     var ingredientsController = require('../controllers/ingredients');
-    ingredientsController.set_db(connection);
+    ingredientsController.setDb(connection);
     
     // things that call the path
     router
