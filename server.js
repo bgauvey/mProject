@@ -17,23 +17,18 @@ var dbconfig = require('./config/database');
 
 var settings = {
     port: process.env.OPENSHIFT_NODEJS_PORT || 8001,
-    dbHost: process.env.OPENSHIFT_MYSQL_DB_HOST || dbconfig.connection.host,
-    dbUser: process.env.OPENSHIFT_MYSQL_DB_USERNAME || dbconfig.connection.user,
-    dbPass: process.env.OPENSHIFT_MYSQL_DB_PASSWORD || dbconfig.connection.password,
+    dbHost: dbconfig.connection.host,
+    dbUser: dbconfig.connection.user,
+    dbPass: dbconfig.connection.password,
     ipaddress: process.env.OPENSHIFT_NODEJS_IP,
     connection: {}
 };
 // configuration ===============================================================
 // connect to our database
 function connectDb () {
-        settings.connection = mysql.createConnection({
-            host: settings.dbHost,
-            user: settings.dbUser,
-            password: settings.dbPass,
-            database: dbconfig.database
-        });
+        settings.connection = mysql.createConnection(dbconfig.connection);;
     }
-console.log('Connecting to mySql ... [' + settings.dbUser + '@' + settings.dbHost + ']');
+console.log('Connecting to mySql ... [' + dbconfig.connection.user + '@' + dbconfig.connection.host + ']');
 connectDb();
 // pass passport for configuration
 require('./config/passport')(passport); 
