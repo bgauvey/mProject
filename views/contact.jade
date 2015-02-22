@@ -1,0 +1,36 @@
+//- views/about.jade
+extends ./layout.jade
+
+block content
+    .row
+        br
+        br
+        .col-sm-4
+            p.title Contact Us
+            hr
+            address
+                |mProject LLC
+                br
+                |123 Amity Way
+                br
+                |New York, NY 012345
+                br
+                strong Phone:
+                |&nbsp;(555) 123-4567                
+                br
+                br
+                strong Email:
+                a(href='mailto:#') &nbsp;name@domain.com
+                
+        .col-sm-8.contact-form
+            form(id='contact' method='post' class='form' role='form')
+                .row
+                    .col-xs-6.col-md-6.form-group
+                        input.form-control(id='name' name='name' placeholder='Name' type='text' required autofocus)
+                    .col-xs-6.col-md-6.form-group
+                        input.form-control(id='email' name='email' placeholder='Email' type='email' required)
+                    textarea.form-control(id='message' name='message' placeholder='Message' rows='5')
+                    br
+                .row
+                    .col-xs-12.col-md-12.form-group
+                        button.btn.btn-hero.pull-right(type='submit') Submit

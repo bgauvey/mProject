@@ -1,0 +1,55 @@
+//- views/index.jade
+extends ./layout.jade
+
+block content
+  .carousel-wrapper
+    .carousel.fade-carousel.slide(data-ride='carousel', data-interval='10000', id='bs-carousel')
+      // Overlay
+      .overlay
+      // Indicators
+      ol.carousel-indicators
+        li.active(data-target='#bs-carousel', data-slide-to='0')
+        li(data-target='#bs-carousel',data-slide-to='1')
+        li(data-target='#bs-carousel',data-slide-to='2')
+      // Wrapper for slides
+      .carousel-inner
+        .item.slides.active
+          .slide-1
+          .hero
+            hgroup
+              h1 Smart
+              h3 Intellect grows with usage
+            a.btn.btn-hero.btn-lg(role='button') See all features
+        .item.slides
+          .slide-2
+          .hero
+            hgroup
+              h1 Responsive
+              h3 Any device. Any where.  Any time.
+            a.btn.btn-hero.btn-lg(role='button') See all features
+        .item.slides
+          .slide-3
+          .hero        
+            hgroup
+              h1 Get Started
+              h3 Signup for your free account now.
+            a.btn.btn-hero.btn-lg(role='button', href='/signup') Register
+  .row
+    .col-md-4.col-xs-12.text-center
+        span.col-icon.fa.fa-stack.fa-5x
+          i.fa.fa-circle.fa-stack-2x
+          i.fa.fa-heart.fa-inverse.fa-stack-1x
+        p.title Healthy Choices
+        p Lorem ipsum dolor sit amet, vix eu enim facer nominavi, ut animal inermis fuisset mei. Ad eam ipsum minimum similique, te aeque scripserit necessitatibus sit, dicta assentior ad per. Eos cu temporibus liberavisse, no sea numquam eloquentiam. Pro te dicunt appetere, an populo consequuntur sed. Option aliquando democritum mea in.
+    .col-md-4.col-xs-12.text-center
+        span.col-icon.fa.fa-stack.fa-5x
+          i.fa.fa-circle.fa-stack-2x
+          i.fa.fa-spoon.fa-inverse.fa-stack-1x
+        p.title Smart Decisions
+        p Malorum scripserit ei usu, ei impedit feugait incorrupte mei. No nam alia habeo utamur, summo pericula constituto eu eos, cu vis libris temporibus. In odio tamquam legendos mel, nobis quaeque expetendis mel in, dicta liber ad nam. Mel nonumy causae legendos ut, vim tibique assueverit at. Ad dicat offendit ponderum sit. Ut sit nulla gloriatur percipitur, ut hinc alterum adipisci sit.
+    .col-md-4.col-xs-12.text-center
+        span.col-icon.fa.fa-stack.fa-5x
+          i.fa.fa-circle.fa-stack-2x
+          i.fa.fa-child.fa-inverse.fa-stack-1x
+        p.title Family Centric
+        p Partem vocent quo ei. Unum soleat definitiones eu pro, quis audiam eripuit sit an, esse reque lobortis cu qui. Has nullam euripidis consequat an, eius tantas euismod eu est, cu vis vidisse qualisque. Ex graeci nominavi consequat cum, saepe nominavi gloriatur qui at. Quo mundi timeam in, nec ad idque repudiandae interpretaris, his illum nonumes mentitum te.

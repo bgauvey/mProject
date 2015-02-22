@@ -1,0 +1,59 @@
+//- views/signup.jade
+extends ./layout.jade
+
+block content
+    .row
+        .col-sm-6.col-sm-offset-3
+            br
+            br
+            // show any messages that come back with authentication
+            if (message.length > 0)
+                div(class='alert alert-danger') #{ message[0] }
+            
+            form(action='/signup' method='post' class='form-horizontal')
+                fieldset
+                    div(id='legend')
+                        legend Register
+                    .control-group
+                        // Username
+                        label.control-label(for='username') Username
+                        .controls
+                            input.form-control(type='text' id='username' name='username' required)
+                            p.help-block Username can contain any letters or numbers, without spaces
+                    .control-group
+                        // E-mail
+                        label.control-label(for='email') E-mail
+                        .controls
+                            input.form-control(type='email' id='email' name='email' required)
+                            p.help-block Please provide your E-mail
+                    .control-group
+                        // Password
+                        label.control-label(for='password') Password
+                        .controls
+                            input.form-control(type='password' id='password' name='password' required)
+                            p.help-block Password should be at least 4 characters
+                    .control-group
+                        // Password
+                        label.control-label(for='password_confirm') Password (Confirm)
+                        .controls
+                            input.form-control(type='password' id='password_confirm' name='password_confirm' required)
+                            p.help-block Please confirm password
+                    .control-group
+                        // Button
+                        .controls
+                            button.btn.btn-success.btn-lg(type='submit') Register
+
+        script.
+            window.onload = function () {
+                document.getElementById('password').onchange = validatePassword;
+                document.getElementById('password_confirm').onchange = validatePassword;
+            }
+            function validatePassword() {
+                var pass2=document.getElementById('password_confirm').value;
+                var pass1=document.getElementById('password').value;
+                if(pass1!=pass2)
+                    document.getElementById('password_confirm').setCustomValidity('Passwords Don't Match');
+                else
+                    document.getElementById('password_confirm').setCustomValidity('');  
+                //empty string means no validation error
+            }

@@ -1,0 +1,32 @@
+//- views/profile.jade
+extends ./layout.jade
+
+block content
+    div(class='page-header text-center')
+        h1
+            span(class='fa fa-anchor') 
+            |&nbsp;Profile Page
+        a(href='/logout' class='btn btn-default btn-sm') Logout
+    .row
+        // LOCAL INFORMATION
+        .col-sm-12
+            .well
+                h3
+                    span(class='fa fa-user') 
+                    |&nbsp;Local
+                p
+                    strong id
+                    |:
+                    = ' ' +  user.id
+                    br
+                    strong Username
+                    |: 
+                    = ' ' + user.username
+                    br
+                    strong E-mail
+                    |: 
+                    = ' ' + user.email
+                    br
+                    strong Password
+                    |: 
+                    = ' ' + user.password

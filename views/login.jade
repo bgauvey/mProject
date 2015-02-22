@@ -1,0 +1,27 @@
+//- views/login.jade
+extends ./layout.jade
+
+block content
+    .row
+        .col-sm-6.col-sm-offset-3
+            br
+            h1
+                span.fa.fa-sign-in
+                |&nbsp;Login
+
+            // show any messages that come back with authentication
+            if (message.length > 0)
+                div(class='alert alert-danger') #{ message[0] }
+
+            // LOGIN FORM
+            form(action='/login' method='post')
+                .form-group
+                    input(type='text' class='form-control' name='username' placeholder='Username')
+                .form-group
+                    input(type='password' class='form-control' name='password' placeholder="Password")
+                .checkbox
+                    label
+                        input(type='checkbox' name='remember' value='yes') 
+                        |Remember Me
+
+                button.btn.btn-success.btn-lg(type='submit') Login
