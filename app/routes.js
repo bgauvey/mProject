@@ -5,9 +5,15 @@ module.exports = function(app, passport) {
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/', function(req, res) {
-		res.render('index.ejs'); // load the index.ejs file
+		res.render('index.jade'); // load the index.jade file
 	});
-
+    app.get('/about', function(req, res) {
+		res.render('about.jade'); // load the about.jade file
+	});
+    app.get('/contact', function(req, res) {
+		res.render('contact.jade'); // load the contact.jade file
+	});
+    
 	// =====================================
 	// LOGIN ===============================
 	// =====================================
@@ -15,7 +21,7 @@ module.exports = function(app, passport) {
 	app.get('/login', function(req, res) {
 		// render the page and pass in any flash data if it exists
         var message = req.flash('loginMessage');
-		res.render('login.ejs', { message: message });
+		res.render('login.jade', { message: message });
 	});
 
 	// process the login form
@@ -42,7 +48,7 @@ module.exports = function(app, passport) {
 	app.get('/signup', function(req, res) {
 		// render the page and pass in any flash data if it exists
         var message = req.flash('signupMessage');
-		res.render('signup.ejs', { message: message });
+		res.render('signup.jade', { message: message });
 	});
 
 	// process the signup form
@@ -58,7 +64,7 @@ module.exports = function(app, passport) {
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('profile.ejs', {
+		res.render('profile.jade', {
 			user : req.user // get the user out of session and pass to template
 		});
 	});
@@ -82,5 +88,5 @@ function isLoggedIn(req, res, next) {
     }
 
 	// if they aren't redirect them to the home page
-	res.redirect('/');
+	res.redirect('/login');
 }

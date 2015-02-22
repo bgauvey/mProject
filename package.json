@@ -26,19 +26,28 @@
   "dependencies": {
     "bcrypt-nodejs": "latest",
     "body-parser": "^1.10.0",
+    "compression": "^1.4.1",
     "connect-flash": "~0.1.1",
     "cookie-parser": "~1.0.1",
     "cookie-session": "~1.1.0",
-    "ejs": "~0.8.8",
+    "cors": "^2.5.3",
     "express": "^4.10.4",
     "express-session": "^1.10.3",
+    "jade": "^1.9.2",
     "morgan": "^1.1.1",
     "mysql": "^2.5.3",
     "passport": "^0.2.1",
     "passport-local": "^1.0.0",
     "serve-favicon": "^2.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.2.1",
+    "gulp": "^3.8.11",
+    "gulp-load-plugins": "^0.8.0",
+    "gulp-nodemon": "^1.0.5",
+    "gulp-util": "^3.0.3",
+    "yargs": "^3.2.1"
+  },
   "bundleDependencies": [],
   "private": true
 }

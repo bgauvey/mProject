@@ -3,91 +3,65 @@
 // set up ======================================================================
 // get all the tools we need
 var express = require('express');
-var morgan = require('morgan');
+var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var flash = require('connect-flash');
 var session = require('express-session');
 var mysql = require('mysql');
+var favicon = require('serve-favicon');
+var compress = require('compression');
+var cors = require('cors');
 
 var app = express();
 var dbconfig = require('./config/database');
-
+var environment = process.env.NODE_ENV || 'dev';
 
 var settings = {
-    port: process.env.OPENSHIFT_NODEJS_PORT || 8001,
+    port: process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ipaddress: process.env.OPENSHIFT_NODEJS_IP,
     connection: {}
 };
-// configuration ===============================================================
-// connect to our database
-function connectDb () {
-        settings.connection = mysql.createConnection({
-            host: dbconfig.connection.host,
-            user: dbconfig.connection.user,
-            password: dbconfig.connection.password,
-            database: dbconfig.database
-        });
-    }
-console.log('Connecting to mySql ... [' + settings.dbUser + '@' + settings.dbHost + ']');
-connectDb();
+
+// database settings
+console.log('Configuring database... [' + dbconfig.connection.user + '@' + dbconfig.connection.host + ']');
+settings.connection = mysql.createConnection({
+    host: dbconfig.connection.host,
+    user: dbconfig.connection.user,
+    password: dbconfig.connection.password,
+    database: dbconfig.database
+});
+
 // pass passport for configuration
 require('./config/passport')(passport); 
 
 // set up our express application =============================================
-
-// log every request to the console
-app.use(morgan('dev')); 
-// read cookies (needed for auth)
+app.use(compress());
+app.use(logger(environment));
+app.use(cors());
 app.use(cookieParser());
-// get information from html forms
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-// set up ejs for templating
-app.set('view engine', 'ejs'); 
-
-// required for passport
-// session secret
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade'); 
+app.use(favicon(__dirname + '/images/favicon.ico'));
+app.use('/styles', express.static(__dirname + '/styles'));
 app.use(session({
     resave: true, 
     saveUninitialized: true,
     secret: 'mProjectIsAlwaysRunning'
 }));
-
 app.use(passport.initialize());
-// persistent login sessions
 app.use(passport.session()); 
-// use connect-flash for flash messages stored in session
 app.use(flash()); 
 
 // routes ======================================================================
 // load our routes and pass in our app and fully configured passport
 require('./app/routes.js')(app, passport); 
-    
-// =====================================
-// API ROUTER ==========================
-// =====================================
-app.use('/api', function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    next();
-});
-//create the express router
-var router = express.Router();
-
-// Initial dummy route for testing /api
-router.get('/', isLoggedIn, function (req, res) {
-    res.setHeader('Content-Type', 'text/html');
-    res.render('api.ejs', { message: null });
-});
-
-// Register all our routes with /api prefix
-app.use('/api', router);
-
-// Add the handlers for the api
-require('./api/ingredients')(router, settings.connection);   
+require('./app/apiRouter.js')(app, settings.connection);     
 
 // launch ======================================================================
 /**
@@ -124,17 +98,6 @@ function setupTerminationHandlers() {
     });
 }
 
-// route middleware to make sure
-function isLoggedIn(req, res, next) {
-
-	// if user is authenticated in the session, carry on
-	if (req.isAuthenticated()){
-		return next();
-    }
-
-	// if they aren't redirect them to the home page
-	res.redirect('/');
-}
 
 setupTerminationHandlers();
 

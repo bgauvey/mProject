@@ -40,13 +40,13 @@ module.exports = function(passport) {
     passport.use(
         'local-signup',
         new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
+            // by default, local strategy uses username and password
             usernameField : 'username',
             passwordField : 'password',
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
         function(req, username, password, done) {
-            // find a user whose email is the same as the forms email
+            // find a user whose username is the same as the forms username
             // we are checking to see if the user trying to login already exists
             connection.query('SELECT * FROM users WHERE username = ?',[username], function(err, rows) {
                 if (err) {
@@ -60,12 +60,14 @@ module.exports = function(passport) {
                     var newUserMysql = {
                         username: username,
                         // use the generateHash function in our user model
-                        password: bcrypt.hashSync(password, null, null)  
+                        password: bcrypt.hashSync(password, null, null),
+                        email: req.body.email
                     };
 
-                    var insertQuery = 'INSERT INTO users ( username, password ) values (?,?)';
+                    var insertQuery = 'INSERT INTO users ( username, password, email ) values (?,?,?)';
 
-                    connection.query(insertQuery,[newUserMysql.username, newUserMysql.password],function(err, rows) {
+                    connection.query(insertQuery, [newUserMysql.username, newUserMysql.password, newUserMysql.email],
+                                     function(err, rows) {
                         newUserMysql.id = rows.insertId;
 
                         return done(null, newUserMysql);
