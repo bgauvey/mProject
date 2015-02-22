@@ -47,7 +47,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade'); 
-//app.use(favicon(__dirname + '/images/favicon.ico'));
+app.use(favicon(__dirname + '/images/favicon.ico'));
 app.use('/styles', express.static(__dirname + '/styles'));
 app.use(session({
     resave: true, 
