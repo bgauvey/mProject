@@ -20,7 +20,7 @@ function serve(isDev) {
             'PORT': port,
             'NODE_ENV': isDev ? 'dev' : 'build'
         },
-        watch: [config.server, config.css + '*.css', config.views + '*.jade']
+        watch: [config.client, config.css + '*.css', config.views + '*.jade']
     };
 
     return $.nodemon(nodeOptions)
@@ -68,7 +68,7 @@ function startBrowserSync(isDev) {
         proxy: 'localhost:' + port,
         port: 3000,
         files: isDev ? [
-            config.server + '**/*.*',
+            config.client + '**/*.*',
             config.css + '**/*.css',
             config.views + '**/*.jade'
         ] : [],

@@ -1,19 +1,20 @@
 module.exports = function() {
-    var server = './';
-    
+    var server = './src/server/';
+    var client = './src/client/';
+
     var config = {
-        css: server + 'styles/',
-        views: server + 'views/',
+        css: client + 'styles/',
+        views: client + 'views/',
         /**
          * browser sync
          */
         browserReloadDelay: 1000,
-        
+
         /**
          * Node settings
          */
         defaultPort: 8080,
         nodeServer: server + 'server.js'
     };
-    return config;    
+    return config;
 };

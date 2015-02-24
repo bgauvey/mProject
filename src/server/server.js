@@ -14,6 +14,7 @@ var favicon = require('serve-favicon');
 var compress = require('compression');
 var cors = require('cors');
 
+var client = '/../client';
 var app = express();
 var dbconfig = require('./config/database');
 var environment = process.env.NODE_ENV || 'dev';
@@ -34,7 +35,7 @@ settings.connection = mysql.createConnection({
 });
 
 // pass passport for configuration
-require('./config/passport')(passport); 
+require('./config/passport')(passport);
 
 // set up our express application =============================================
 app.use(compress());
@@ -45,23 +46,23 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade'); 
-app.use(favicon(__dirname + '/images/favicon.ico'));
-app.use('/styles', express.static(__dirname + '/styles'));
+app.set('views', __dirname + client +  '/views');
+app.set('view engine', 'jade');
+app.use(favicon(__dirname + client + '/favicon.ico'));
+app.use('/styles', express.static(__dirname + client + '/styles'));
 app.use(session({
-    resave: true, 
+    resave: true,
     saveUninitialized: true,
     secret: 'mProjectIsAlwaysRunning'
 }));
 app.use(passport.initialize());
-app.use(passport.session()); 
-app.use(flash()); 
+app.use(passport.session());
+app.use(flash());
 
 // routes ======================================================================
 // load our routes and pass in our app and fully configured passport
-require('./app/routes.js')(app, passport); 
-require('./app/apiRouter.js')(app, settings.connection);     
+require('./app/routes.js')(app, passport);
+require('./app/apiRouter.js')(app, settings.connection);
 
 // launch ======================================================================
 /**
