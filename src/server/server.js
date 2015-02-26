@@ -13,17 +13,19 @@ var mysql = require('mysql');
 var favicon = require('serve-favicon');
 var compress = require('compression');
 var cors = require('cors');
-
-var client = '/../client';
-var app = express();
 var dbconfig = require('./config/database');
-var environment = process.env.NODE_ENV || 'dev';
 
+var app = express();
+var environment = process.env.NODE_ENV || 'dev';
 var settings = {
     port: process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ipaddress: process.env.OPENSHIFT_NODEJS_IP,
     connection: {}
 };
+
+console.log('About to crank up node');
+console.log('PORT=' + settings.port);
+console.log('NODE_ENV=' + environment);
 
 // database settings
 console.log('Configuring database... [' + dbconfig.connection.user + '@' + dbconfig.connection.host + ']');
@@ -42,14 +44,11 @@ app.use(compress());
 app.use(logger(environment));
 app.use(cors());
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(bodyParser.json());
-app.set('views', __dirname + client +  '/views');
-app.set('view engine', 'jade');
-app.use(favicon(__dirname + client + '/favicon.ico'));
-app.use('/styles', express.static(__dirname + client + '/styles'));
 app.use(session({
     resave: true,
     saveUninitialized: true,
@@ -58,6 +57,23 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
+switch (environment) {
+    case 'build':
+        console.log('** BUILD **');
+        app.use(express.static('./build/'));
+        app.use('/*', express.static('./build/index.html'));
+        break;
+    default:
+        console.log('** DEV **');
+        app.use(express.static('./src/client/'));
+        app.use(express.static('./'));
+        app.use(express.static('./tmp'));
+        app.set('views', './src/client/views');
+        app.use(favicon('./src/client/favicon.ico'));
+        break;
+}
+
 
 // routes ======================================================================
 // load our routes and pass in our app and fully configured passport
@@ -110,6 +126,9 @@ if (typeof settings.ipaddress === 'undefined') {
 }
 
 app.listen(settings.port, settings.ipaddress, function () {
-            console.log('%s: Node server started on %s:%d ...',
-                Date(Date.now()), settings.ipaddress, settings.port);
+    console.log('%s: Express server listening on %s:%d ...',
+        Date(Date.now()), settings.ipaddress, settings.port);
+    console.log('env = ' + app.get('env') +
+                '\n__dirname = ' + __dirname +
+                '\nprocess.cwd = ' + process.cwd());
 });
